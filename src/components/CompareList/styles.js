@@ -1,10 +1,14 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: grid;
   justify-content: center;
   margin-top: 50px;
+  padding-bottom: 50px;
+  flex-direction: row;
+  width: 90%;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 250px));
 `;
 
 export const Repository = styled.div`

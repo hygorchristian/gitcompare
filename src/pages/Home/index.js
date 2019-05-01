@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Form } from "./styles";
 import CompareList from "../../components/CompareList";
-import axios from "axios";
+import { buscarLinks, buscarRepo } from "../../services/api";
 
 import logo from "../../assets/img/logo.png";
 
@@ -10,45 +10,19 @@ export default class Home extends Component {
     repositories: []
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
-    const repo = e.target.busca.value;
-    this.buscarLinks(repo);
-  };
+    this.setState({ repositories: [] }); //limpando repositorios a cada nova busca
+    const termos = e.target.busca.value;
+    const urls = await buscarLinks(termos, 10);
 
-  buscarLinks = async q => {
-    this.setState({ repositories: [] });
-    const google = axios.create({
-      baseURL: "https://www.googleapis.com/customsearch/v1?"
+    urls.forEach(async url => {
+      const [owner, repositoryName] = url;
+      const repository = await buscarRepo(owner, repositoryName);
+      this.setState(state => ({
+        repositories: [...state.repositories, repository]
+      }));
     });
-    const resposta = await google.get("", {
-      params: {
-        key: "AIzaSyBjF1EqgrOenlx0IXtwzPSfC2YMB6ibbpg", //api key
-        q, //querue de busca
-        cx: "012457673457585422072:mxkrwu-8eis", //contexto de busca - está configurado para buscar apenas no github
-        num: 6 // quantidade de itens por busca
-      }
-    });
-    const urls = resposta.data.items.map(item => {
-      const arr = item.formattedUrl
-        .replace("https://github.com/", "")
-        .split("/");
-      if (arr.length === 2) {
-        const [owner, repo] = arr;
-        this.buscarRepo(owner, repo);
-      }
-    });
-
-    console.log(urls);
-  };
-
-  buscarRepo = async (owner, repo) => {
-    const baseURL = `https://api.github.com/repos/${owner}/${repo}`;
-    const api = axios.create({ baseURL });
-    const resposta = await api.get();
-    this.setState(state => ({
-      repositories: [...state.repositories, resposta.data]
-    }));
   };
 
   render() {

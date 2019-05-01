@@ -43,3 +43,15 @@ export const Form = styled.form`
     }
   }
 `;
+
+export const Error = styled.span`
+  height: 55px;
+  border-radius: 3px;
+  line-height: 55px;
+  font-size: 20px;
+  padding: 0 20px;
+  background: #fe6e6e;
+  font-weight: bold;
+  color: white;
+  margin-top: 20px;
+`;

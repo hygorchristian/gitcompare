@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body{
-    background-color: #9b65e6;
+    background-color: #333333;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
     font-family: Nunito, sans-serif;

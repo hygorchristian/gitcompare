@@ -12,14 +12,23 @@ export const buscarLinks = async (q, itensPorBusca) => {
       num: itensPorBusca // quantidade de itens por busca
     }
   });
-  const urls = resposta.data.items.map(item => {
-    const arr = item.formattedUrl.replace("https://github.com/", "").split("/");
-    if (arr.length === 2) {
-      return arr;
-    }
-  });
 
-  return Promise.resolve(urls.filter(item => item));
+  const items = resposta.data.items;
+
+  if (items) {
+    const urls = items.map(item => {
+      const arr = item.formattedUrl
+        .replace("https://github.com/", "")
+        .split("/");
+      if (arr.length === 2) {
+        return arr;
+      }
+    });
+
+    return Promise.resolve(urls.filter(item => item));
+  } else {
+    return Promise.reject("Não há itens!");
+  }
 };
 
 export const buscarRepo = async (owner, repo) => {

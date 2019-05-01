@@ -8,12 +8,13 @@ import logo from "../../assets/img/logo.png";
 export default class Home extends Component {
   state = {
     repositories: [],
-    error: null
+    error: null,
+    loading: false
   };
 
   handleSubmit = async e => {
     e.preventDefault();
-    this.setState({ repositories: [], error: null }); //limpando repositorios a cada nova busca
+    this.setState({ repositories: [], error: null, loading: true }); //limpando repositorios a cada nova busca
     const termos = e.target.busca.value;
 
     try {
@@ -33,17 +34,21 @@ export default class Home extends Component {
     } catch (error) {
       console.log(error);
       this.setState({ error });
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
   render() {
-    const { repositories, error } = this.state;
+    const { repositories, error, loading } = this.state;
     return (
       <Container>
         <img src={logo} alt="Github Compare" />
         <Form action="" onSubmit={this.handleSubmit}>
           <input type="text" name="busca" placeholder="Ex: react native maps" />
-          <button type="submit">OK</button>
+          <button type="submit">
+            {loading ? <i className="fa fa-spinner fa-pulse" /> : "OK"}
+          </button>
         </Form>
         {error && <Error>{error}</Error>}
         <CompareList repositories={repositories} />

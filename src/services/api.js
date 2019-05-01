@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 
 export const buscarLinks = async (q, itensPorBusca) => {
   const google = axios.create({
@@ -34,7 +35,9 @@ export const buscarLinks = async (q, itensPorBusca) => {
 export const buscarRepo = async (owner, repo) => {
   const baseURL = `https://api.github.com/repos/${owner}/${repo}`;
   const api = axios.create({ baseURL });
-  const resposta = await api.get();
+  const { data: repository } = await api.get();
 
-  return Promise.resolve(resposta.data);
+  repository.last_commit = moment(repository.pushed_at).fromNow();
+
+  return Promise.resolve(repository);
 };

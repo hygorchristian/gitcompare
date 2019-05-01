@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import "font-awesome/css/font-awesome.css";
 
 const GlobalStyle = createGlobalStyle`
   *{
@@ -12,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: #333333;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
-    font-family: Nunito, sans-serif;
+    font-family: Montserrat, sans-serif;
   }
 `;
 
